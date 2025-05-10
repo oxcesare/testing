@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Gestión de Disponibilidad</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <style>
+        .calendar {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 5px;
+            max-width: 350px;
+            margin: 20px auto;
+        }
+        .day {
+            padding: 10px;
+            text-align: center;
+            border: 1px solid #ccc;
+            cursor: pointer;
+            user-select: none;
+        }
+        .day:hover {
+            background-color: #f0f0f0;
+        }
+        .available {
+            background-color: #4CAF50 !important;
+            color: white;
+        }
+        .unavailable {
+            background-color: #f44336 !important;
+            color: white;
+        }
+        .selected {
+            border: 2px solid #000;
+        }
+        .indicator {
+            display: inline-block;
+            padding: 10px;
+            margin: 10px;
+            border-radius: 5px;
+            color: white;
+            font-weight: bold;
+            text-align: center;
+        }
+        .available-indicator {
+            background-color: #4CAF50;
+        }
+        .unavailable-indicator {
+            background-color: #f44336;
+        }
+        .info-container {
+            display: flex;
+            justify-content: center;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="#">Citas Médicas</a>
+            <div class="collapse navbar-collapse">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <span class="nav-link" id="fecha"></span>
+                    </li>
+                </ul>
+                
+            </div>
+        </div>
+    </nav>
+    
+    <div class="container mt-5">
+        <h2>Gestión de Disponibilidad</h2>
+        <div id="calendarContainer">
+            <h3>Marzo 2025</h3>
+            <div class="calendar" id="calendar"></div>
+        </div>
+        <p id="mensaje" class="text-success mt-3" style="display: none;">La fecha se actualizó correctamente.</p>
+
+        <!-- Indicadores de disponibilidad -->
+        <div class="info-container">
+            <div class="indicator available-indicator">Fecha Disponible</div>
+            <div class="indicator unavailable-indicator">Fecha No Disponible</div>
+        </div>
+
+         <!-- Enlace para regresar a la página del doctor -->
+         <div class="text-center mt-4">
+            <a href="doctor.html" class="btn btn-primary">Regresar a Doctor</a>
+        </div>
+    </div>
+    
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            const calendar = document.getElementById("calendar");
+            const mensaje = document.getElementById("mensaje");
+
+            // Crear fechas de marzo 2025 (puedes personalizar las fechas no disponibles)
+            const fechasDisponibles = [1, 3, 5, 7, 9, 11, 13, 15, 17, 19, 21, 23, 25, 27, 29, 31];
+            const fechasNoDisponibles = [2, 4, 6, 8, 10, 12, 14, 16, 18, 20, 22, 24, 26, 28];
+
+            // Generar días del mes (del 1 al 31 para marzo)
+            for (let i = 1; i <= 31; i++) {
+                const day = document.createElement("div");
+                day.classList.add("day");
+                day.textContent = i;
+
+                // Si el día está en la lista de fechas disponibles, lo coloreamos verde
+                if (fechasDisponibles.includes(i)) {
+                    day.classList.add("available");
+                }
+                // Si el día está en la lista de fechas no disponibles, lo coloreamos rojo
+                else if (fechasNoDisponibles.includes(i)) {
+                    day.classList.add("unavailable");
+                }
+
+                // Evento cuando se selecciona un día
+                day.addEventListener("click", () => {
+                    // Si la fecha está disponible (verde), cambiarla a no disponible (rojo)
+                    if (day.classList.contains("available")) {
+                        day.classList.remove("available");
+                        day.classList.add("unavailable");
+                    }
+                    // Si la fecha está no disponible (rojo), cambiarla a disponible (verde)
+                    else if (day.classList.contains("unavailable")) {
+                        day.classList.remove("unavailable");
+                        day.classList.add("available");
+                    }
+                    // Marcar el día como seleccionado visualmente
+                    document.querySelectorAll(".day").forEach(d => d.classList.remove("selected"));
+                    day.classList.add("selected");
+
+                    // Mostrar mensaje de actualización
+                    mensaje.style.display = "block";
+                    setTimeout(() => mensaje.style.display = "none", 2000);
+                });
+
+                calendar.appendChild(day);
+            }
+        });
+    </script>
+    <script src="misScripts.js"></script>
+</body>
+</html>

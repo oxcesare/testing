@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Cancelar Citas</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <script src="misScripts.js"></script>
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="index.html">Citas Médicas</a>
+        </div>
+    </nav>
+    
+    <div class="container mt-5">
+        <h2>Cancelar Citas</h2>
+        <table class="table table-striped mt-3">
+            <thead>
+                <tr>
+                    <th>Médico</th>
+                    <th>Especialidad</th>
+                    <th>Fecha</th>
+                    <th>Hora</th>
+                    <th>Acción</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>Dr. Juan Pérez</td>
+                    <td>Cardiología</td>
+                    <td>25/02/2025</td>
+                    <td>10:00 AM</td>
+                    <td>                        
+                        <button class="btn btn-danger" onclick="cancelarCita('Dr. Juan Pérez', 'Cardiología', '25/02/2025', '10:00 AM')">Cancelar</button>
+                        </button>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Dra. María Gómez</td>
+                    <td>Dermatología</td>
+                    <td>26/02/2025</td>
+                    <td>2:00 PM</td>
+                    <td>                        
+                        <button class="btn btn-danger" onclick="cancelarCita('Dr. Juan Pérez', 'Cardiología', '25/02/2025', '10:00 AM')">Cancelar</button>
+                        </button>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+
+          <!-- Enlace para regresar a la página de paciente -->
+          <div class="text-center mt-4">
+            <a href="paciente.html" class="btn btn-primary">Regresar a Paciente</a>
+        </div>
+
+        
+    </div>
+    
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

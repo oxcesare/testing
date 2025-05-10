@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Plataforma de Citas Médicas</title>
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+    />
+  </head>
+  <body>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+      <div class="container-fluid">
+        <a class="navbar-brand" href="#">Citas Médicas</a>
+      </div>
+    </nav>
+
+    <div class="container-fluid mt-5">
+      <div
+        class="row justify-content-center align-items-center"
+        style="min-height: 80vh"
+      >
+        <div class="col-md-6 col-lg-4">
+          <div class="card shadow p-4">
+            <h3 class="text-center mb-3">Historial de Citas</h3>
+
+            <form id="formBuscar" action="javascript:void(0);" method="get">
+              <!-- Combo para ver historial de citas -->
+              <div class="mb-3">
+                <label for="especialidad" class="form-label">Selecciona una opción</label>
+                <select class="form-control" id="especialidad" name="especialidad">
+                  <option value="">-- Selecciona --</option>
+                </select>
+              </div>
+
+              <!-- Combo para cancelar cita -->
+              <div class="mb-4">
+                <label for="doctor" class="form-label">Cancelar cita</label>
+                <select class="form-control" id="doctor" name="doctor">
+                  <option value="">-- Selecciona --</option>
+                </select>
+              </div>
+
+              <div class="d-grid">
+                <button type="submit" class="btn btn-primary">Cerrar Sesión</button>
+              </div>
+            </form>
+
+            <div id="resultados" class="mt-4"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+  </body>
+</html>

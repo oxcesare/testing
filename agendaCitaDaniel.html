@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Plataforma de Citas Médicas</title>
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+    />
+  </head>
+  <body>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+      <div class="container-fluid">
+        <a class="navbar-brand" href="#">Citas Médicas</a>
+      </div>
+    </nav>
+
+    <div class="container-fluid mt-5">
+      <div
+        class="row justify-content-center align-items-center"
+        style="min-height: 80vh"
+      >
+        <div class="col-md-6 col-lg-4">
+          <div class="card shadow p-4">
+            <h3 class="text-center mb-3">Agenda Tu Cita</h3>
+
+            <form id="formBuscar" action="javascript:void(0);" method="get">
+              <!-- Combo para especialidad -->
+              <div class="mb-3">
+                <label for="especialidad" class="form-label"
+                  >Agenda por Especialidad</label
+                >
+                <select
+                  class="form-control"
+                  id="especialidad"
+                  name="especialidad"
+                >
+                  <option value="">-- Selecciona una especialidad --</option>
+                  <option value="Cardiología">Cardiología</option>
+                  <option value="Dermatología">Dermatología</option>
+                  <option value="Neurología">Neurología</option>
+                  <option value="Pediatría">Pediatría</option>
+                  <option value="Oftalmología">Oftalmología</option>
+                </select>
+              </div>
+
+              <!-- Combo para doctor, dependiente de especialidad -->
+              <div class="mb-4">
+                <label for="doctor" class="form-label">Agenda por Doctor</label>
+                <select class="form-control" id="doctor" name="doctor">
+                  <option value="">Selecciona un doctor</option>
+                </select>
+              </div>
+
+              <div class="d-grid">
+                <button type="submit" class="btn btn-primary">Cerrar Sesión</button>
+              </div>
+            </form>
+
+            <div id="resultados" class="mt-4"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- JS -->
+    <script>
+      const medicosDummy = {
+        Cardiología: [
+          {
+            nombre: "Dr. Juan Pérez",
+            especialidad: "Cardiología",
+            disponible: true,
+          },
+          {
+            nombre: "Dr. Ana González",
+            especialidad: "Cardiología",
+            disponible: true,
+          },
+        ],
+        Dermatología: [
+          {
+            nombre: "Dra. Laura Gómez",
+            especialidad: "Dermatología",
+            disponible: true,
+          },
+          {
+            nombre: "Dr. Carlos Sánchez",
+            especialidad: "Dermatología",
+            disponible: false,
+          },
+        ],
+        Neurología: [
+          {
+            nombre: "Dr. Marcos Ruiz",
+            especialidad: "Neurología",
+            disponible: true,
+          },
+        ],
+        Pediatría: [
+          {
+            nombre: "Dra. Teresa López",
+            especialidad: "Pediatría",
+            disponible: true,
+          },
+          {
+            nombre: "Dr. Javier Torres",
+            especialidad: "Pediatría",
+            disponible: false,
+          },
+        ],
+        Oftalmología: [
+          {
+            nombre: "Dr. Mario Romero",
+            especialidad: "Oftalmología",
+            disponible: true,
+          },
+        ],
+      };
+
+      // Actualiza lista de doctores cuando se cambia especialidad
+      document
+        .getElementById("especialidad")
+        .addEventListener("change", function () {
+          const especialidad = this.value;
+          const doctorSelect = document.getElementById("doctor");
+          doctorSelect.innerHTML =
+            '<option value="">Selecciona un doctor</option>';
+
+          const medicos = medicosDummy[especialidad] || [];
+
+          medicos.forEach(function (medico) {
+            const option = document.createElement("option");
+            option.value = medico.nombre;
+            option.textContent = medico.nombre;
+            doctorSelect.appendChild(option);
+          });
+        });
+
+      document
+        .getElementById("formBuscar")
+        .addEventListener("submit", function () {
+          const especialidad = document.getElementById("especialidad").value;
+          const doctorSeleccionado = document.getElementById("doctor").value;
+          const resultados = document.getElementById("resultados");
+          resultados.innerHTML = "";
+
+          let medicos = [];
+
+          if (especialidad) {
+            medicos = medicosDummy[especialidad] || [];
+          } else if (doctorSeleccionado) {
+            // Buscar el doctor por nombre
+            for (const lista of Object.values(medicosDummy)) {
+              const encontrado = lista.find(
+                (m) => m.nombre === doctorSeleccionado
+              );
+              if (encontrado) {
+                medicos.push(encontrado);
+                break;
+              }
+            }
+          }
+
+          if (medicos.length > 0) {
+            medicos.forEach((medico) => {
+              const medicoDiv = document.createElement("div");
+              medicoDiv.classList.add("card", "mb-3");
+              medicoDiv.innerHTML = `
+            <div class="card-body">
+              <h5 class="card-title">${medico.nombre}</h5>
+              <p class="card-text">Especialidad: ${medico.especialidad}</p>
+              <p class="card-text"><strong>${
+                medico.disponible ? "Disponible" : "No Disponible"
+              }</strong></p>
+              ${
+                medico.disponible
+                  ? `<a href="reservar_cita.html?especialidad=${medico.especialidad}&medico=${medico.nombre}" class="btn btn-success">Agendar Cita</a>`
+                  : ""
+              }
+            </div>
+          `;
+              resultados.appendChild(medicoDiv);
+            });
+          } else {
+            resultados.innerHTML =
+              "<p>No se encontraron médicos disponibles con los criterios seleccionados.</p>";
+          }
+        });
+    </script>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+  </body>
+</html>

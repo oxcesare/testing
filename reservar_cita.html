@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Reservar Cita</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="#">Citas Médicas</a>
+        </div>
+    </nav>
+
+    <div class="container mt-5">
+        <h2>Agendar Cita</h2>
+        <form id="citaForm">
+            <div class="mb-3">
+                <label for="fechaCita" class="form-label">Selecciona una fecha</label>
+                <input type="date" class="form-control" id="fechaCita" name="fechaCita" required>
+            </div>
+            <div class="mb-3">
+                <label for="especialidad" class="form-label">Especialidad</label>
+                <input type="text" class="form-control" id="especialidad" name="especialidad" readonly>
+            </div>
+            <div class="mb-3">
+                <label for="medico" class="form-label">Médico</label>
+                <input type="text" class="form-control" id="medico" name="medico" readonly>
+            </div>
+            <div class="mb-3">
+                <label for="notas" class="form-label">Notas adicionales</label>
+                <textarea class="form-control" id="notas" name="notas" rows="3"></textarea>
+            </div>
+            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#confirmModal">Confirmar</button>
+        </form>
+    </div>
+
+    <!-- Modal de confirmación -->
+    <div class="modal fade" id="confirmModal" tabindex="-1" aria-labelledby="confirmModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="confirmModalLabel">Confirmar Cita</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <p><strong>Fecha:</strong> <span id="modalFecha"></span></p>
+                    <p><strong>Especialidad:</strong> <span id="modalEspecialidad"></span></p>
+                    <p><strong>Médico:</strong> <span id="modalMedico"></span></p>
+                    <p><strong>Notas:</strong> <span id="modalNotas"></span></p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                    <button type="button" class="btn btn-success" id="confirmarCita">Confirmar Cita</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // Obtener los parámetros de la URL
+        const urlParams = new URLSearchParams(window.location.search);
+        const especialidad = urlParams.get('especialidad');
+        const medico = urlParams.get('medico');
+
+        // Llenar los campos con los valores de la URL
+        document.getElementById('especialidad').value = especialidad;
+        document.getElementById('medico').value = medico;
+
+        document.getElementById('citaForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+        });
+
+        document.querySelector('[data-bs-toggle="modal"]').addEventListener('click', function() {
+            const fechaCita = document.getElementById('fechaCita').value;
+            const notas = document.getElementById('notas').value;
+
+            document.getElementById('modalFecha').textContent = fechaCita;
+            document.getElementById('modalEspecialidad').textContent = especialidad;
+            document.getElementById('modalMedico').textContent = medico;
+            document.getElementById('modalNotas').textContent = notas;
+        });
+
+        document.getElementById('confirmarCita').addEventListener('click', function() {
+            const fechaCita = document.getElementById('fechaCita').value;
+            const notas = document.getElementById('notas').value;
+
+            // Redirigir a confirmacion_cita.html pasando los parámetros
+            const confirmacionURL = `confirmacion_cita.html?fechaCita=${fechaCita}&especialidad=${especialidad}&medico=${medico}&notas=${encodeURIComponent(notas)}`;
+            window.location.href = confirmacionURL; // Redirige al formulario de confirmación
+        });
+    </script>
+</body>
+</html>
